@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For Amanda ❤️</title>
+  <style>
+    :root{--pink:#ff4b6e;--bg:#ffe6e9;--card:#fff;--muted:#555}
+    html,body{height:100%;margin:0}
+    body{display:flex;align-items:center;justify-content:center;background:var(--bg);font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif}
+    .card{width:min(480px,94%);background:var(--card);border-radius:18px;padding:28px;box-shadow:0 12px 30px rgba(0,0,0,0.12);text-align:center}
+    h1{color:var(--pink);margin:0 0 8px;font-size:1.6rem}
+    p.lead{color:var(--muted);margin:0 0 14px;font-size:1.03rem}
+    .actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+    button{border:0;border-radius:999px;padding:12px 24px;font-weight:700;cursor:pointer;font-size:1rem;transition:transform .12s}
+    #yes{background:var(--pink);color:#fff}
+    #no{background:#e9e9e9;color:#222}
+    .result{display:none;margin-top:16px;padding:14px;border-radius:12px}
+    .result.show{display:block}
+    .result.yes{background:linear-gradient(180deg,#fff0f2,#fff);border:1px solid rgba(255,75,110,0.06)}
+    .result.no{background:#f2f2f2}
+    .small{display:block;margin-top:10px;color:#666;font-size:.95rem}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="card" role="dialog" aria-labelledby="title" aria-describedby="question">
+    <h1 id="title">Hey Amanda! ❤️</h1>
+    <p id="question" class="lead">Amanda Mbonambi, will you please be my date tonight?</p>
+
+    <div class="actions" role="group" aria-label="Choose yes or no">
+      <button id="yes" type="button">YES!</button>
+      <button id="no" type="button">No</button>
+    </div>
+
+    <div id="yesResult" class="result yes" role="status" aria-live="polite">
+      <strong>Woohoo! 🎉</strong>
+      <div class="small">It's a date, Amanda! I can't wait — I'll pick you up soon ❤️</div>
+    </div>
+
+    <div id="noResult" class="result no" role="status" aria-live="polite">
+      <strong>Okay — thanks for being honest.</strong>
+      <div class="small">No worries. If you change your mind, open this again and press YES 😊</div>
+    </div>
+
+    <div class="small" style="margin-top:12px;color:#888">Tip: she can open this link and press YES or NO.</div>
+  </div>
+
+  <script>
+    // Separate storage key so this link is always fresh and independent
+    const storageKey = 'forAmanda_response_fresh_v2';
+    const yesBtn = document.getElementById('yes');
+    const noBtn = document.getElementById('no');
+    const yesResult = document.getElementById('yesResult');
+    const noResult = document.getElementById('noResult');
+
+    function show(choice){
+      yesBtn.disabled = true; noBtn.disabled = true;
+      if(choice === 'yes'){
+        yesResult.classList.add('show');
+        noResult.classList.remove('show');
+      } else {
+        noResult.classList.add('show');
+        yesResult.classList.remove('show');
+      }
+      try{localStorage.setItem(storageKey, choice);}catch(e){}
+    }
+
+    yesBtn.addEventListener('click', ()=> show('yes'));
+    noBtn.addEventListener('click', ()=> show('no'));
+
+    (function restore(){
+      try{
+        const s = localStorage.getItem(storageKey);
+        if(s==='yes') show('yes');
+        if(s==='no') show('no');
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>
